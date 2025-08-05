@@ -1,12 +1,8 @@
-name: Deploy static site to GitHub Pages
+name: Deploy to GitHub Pages
 
 on:
   push:
     branches: [main]
-
-permissions:
-  contents: read
-  pages: write
 
 jobs:
   deploy:
@@ -16,14 +12,9 @@ jobs:
       - name: Checkout source
         uses: actions/checkout@v3
 
-      - name: Add .nojekyll
-        run: touch .nojekyll
-
-      - name: Publish artifact for Pages
-        uses: actions/upload-pages-artifact@v1
+      - name: Deploy to gh-pages
+        uses: peaceiris/actions-gh-pages@v3
         with:
-          path: ./ # Thư mục chứa file tĩnh
-
-      - name: Deploy to GitHub Pages
-        id: deployment
-        uses: actions/deploy-pages@main
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: .
+          publish_branch: gh-pages
